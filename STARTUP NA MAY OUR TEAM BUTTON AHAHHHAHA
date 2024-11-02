@@ -1,0 +1,209 @@
+package newlist;
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+
+public class click extends JFrame {
+
+    private JProgressBar progressBar;
+    private Timer timer;
+    private int progressValue = 0;
+
+    public click() {
+        setTitle("TodoList");
+        setSize(600, 400);
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        setLocationRelativeTo(null);
+
+        // Background image
+        String backgroundImagePath = "C:\\Users\\Maymay\\Downloads\\ppt bg.jpg";  
+        JLabel background = new JLabel(new ImageIcon(backgroundImagePath));
+        background.setLayout(new BorderLayout());
+
+        JPanel textPanel = new JPanel();
+        textPanel.setOpaque(false);
+        textPanel.setLayout(new BoxLayout(textPanel, BoxLayout.Y_AXIS));
+
+        // Title and subtitle
+        JLabel titleLabel = new JLabel("To-Do List for Everyone");
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 32));
+        titleLabel.setForeground(Color.BLACK);
+        titleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        JLabel subtitleLabel = new JLabel("Millions of tasks. No limits.");
+        subtitleLabel.setFont(new Font("SansSerif", Font.PLAIN, 18));
+        subtitleLabel.setForeground(Color.BLACK);
+        subtitleLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Start Button
+        JButton getStartedButton = new JButton("Click Here To Start!");
+        getStartedButton.setFont(new Font("SansSerif", Font.BOLD, 16));
+        getStartedButton.setBackground(Color.BLACK);
+        getStartedButton.setForeground(Color.WHITE);
+        getStartedButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Show Profiles Button
+        JButton showProfilesButton = new JButton("Our Team!");
+        showProfilesButton.setFont(new Font("SansSerif", Font.BOLD, 16));
+        showProfilesButton.setBackground(Color.BLACK);
+        showProfilesButton.setForeground(Color.WHITE);
+        showProfilesButton.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+        // Action listener for Show Profiles button
+        showProfilesButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                showProfiles();
+            }
+        });
+
+        // Progress bar (initially hidden)
+        progressBar = new JProgressBar(0, 100);
+        progressBar.setVisible(false);
+        progressBar.setAlignmentX(Component.CENTER_ALIGNMENT);
+        progressBar.setForeground(new Color(30, 215, 96));
+
+        // Action listener for Start button click
+        getStartedButton.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                progressValue = 0;
+                progressBar.setValue(progressValue);
+                progressBar.setVisible(true);
+                timer.start();
+            }
+        });
+
+        // Timer to simulate progress
+        timer = new Timer(50, new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                progressValue += 2;
+                if (progressValue > 100) {
+                    progressValue = 100;
+                }
+                progressBar.setValue(progressValue);
+
+                if (progressValue >= 100) {
+                    timer.stop();
+                    progressBar.setValue(100);
+
+                    Timer delay = new Timer(500, new ActionListener() {
+                        @Override
+                        public void actionPerformed(ActionEvent e) {
+                            new TaskManagerApp();
+                            dispose();
+                        }
+                    });
+                    delay.setRepeats(false);
+                    delay.start();
+                }
+            }
+        });
+
+        // Add components to panel
+        textPanel.add(Box.createVerticalStrut(100));
+        textPanel.add(titleLabel);
+        textPanel.add(Box.createVerticalStrut(10));
+        textPanel.add(subtitleLabel);
+        textPanel.add(Box.createVerticalStrut(20));
+        textPanel.add(getStartedButton);
+        textPanel.add(Box.createVerticalStrut(10));
+        textPanel.add(showProfilesButton);
+        textPanel.add(Box.createVerticalStrut(20));
+        textPanel.add(progressBar);
+
+        background.add(textPanel, BorderLayout.CENTER);
+        add(background);
+    }
+
+    private void showProfiles() {
+        JFrame profileFrame = new JFrame("Profiles");
+        profileFrame.setSize(800, 400);
+        profileFrame.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
+        profileFrame.setLocationRelativeTo(null);
+        // Set the background color of the JFrame to Charcoal Gray
+        profileFrame.getContentPane().setBackground(new Color(54, 69, 79));
+
+        JPanel mainPanel = new JPanel();
+        mainPanel.setLayout(new BorderLayout());
+        // Set the background color of the main panel to Charcoal Gray
+        mainPanel.setBackground(new Color(54, 69, 79));
+
+        // "Who's Watching?" label
+        JLabel titleLabel = new JLabel("Class of INF 231", SwingConstants.CENTER);
+        titleLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
+        titleLabel.setForeground(Color.WHITE);
+        titleLabel.setBorder(BorderFactory.createEmptyBorder(20, 0, 20, 0));
+
+        // Profile panel with GridLayout for better spacing
+        JPanel profilePanel = new JPanel(new GridLayout(1, 5, 20, 0));
+        // Set the background color of the profile panel to Charcoal Gray
+        profilePanel.setBackground(new Color(73, 73, 73));
+
+        String[] imagePaths = {
+            "C:\\Users\\Maymay\\Downloads\\love 😘.jpg",
+            "C:\\Users\\Maymay\\Downloads\\download (8).jpg",
+            "C:\\Users\\Maymay\\Downloads\\download (7).jpg",
+            "C:\\Users\\Maymay\\Downloads\\download (6).jpg",
+            "C:\\Users\\Maymay\\Downloads\\download (5).jpg",
+        };
+        String[] names = {"Irish", "Ella", "JC", "Aedyle", "John dale"};
+
+        // Add profile images and labels
+        for (int i = 0; i < 5; i++) {
+            JPanel panel = new JPanel();
+            panel.setLayout(new BoxLayout(panel, BoxLayout.Y_AXIS));
+            // Set the background color of the profile panel to Charcoal Gray
+            panel.setBackground(new Color(54, 69, 79));
+            panel.setBorder(BorderFactory.createEmptyBorder(10, 10, 10, 10));
+
+            ImageIcon originalIcon = new ImageIcon(imagePaths[i]);
+            Image scaledImage = originalIcon.getImage().getScaledInstance(100, 100, Image.SCALE_SMOOTH); // Adjust size
+            ImageIcon profileIcon = new ImageIcon(scaledImage);
+
+            JLabel profileLabel = new JLabel(profileIcon);
+            profileLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+
+            JLabel nameLabel = new JLabel(names[i]);
+            nameLabel.setAlignmentX(Component.CENTER_ALIGNMENT);
+            nameLabel.setForeground(Color.WHITE);
+
+            panel.add(profileLabel);
+            panel.add(Box.createVerticalStrut(5));
+            panel.add(nameLabel);
+            profilePanel.add(panel);
+        }
+
+        // Back button
+        JButton manageProfilesButton = new JButton("Back");
+        manageProfilesButton.setFont(new Font("SansSerif", Font.PLAIN, 14));
+        manageProfilesButton.setBackground(new Color(73, 73, 73)); // Set button background to Charcoal Gray
+        manageProfilesButton.setForeground(Color.WHITE);
+        manageProfilesButton.addActionListener(e -> {
+            profileFrame.dispose();
+            new click().setVisible(true);
+        });
+
+        // Add components to main panel
+        mainPanel.add(titleLabel, BorderLayout.NORTH);
+        mainPanel.add(profilePanel, BorderLayout.CENTER);
+
+        // Button panel at the bottom
+        JPanel buttonPanel = new JPanel();
+        buttonPanel.setBackground(new Color(73, 73, 73)); // Set button panel background to Charcoal Gray
+        buttonPanel.add(manageProfilesButton);
+        mainPanel.add(buttonPanel, BorderLayout.SOUTH);
+
+        profileFrame.add(mainPanel);
+        profileFrame.setVisible(true);
+    }
+
+    public static void main(String[] args) {
+        SwingUtilities.invokeLater(() -> {
+            new click().setVisible(true);
+        });
+    }
+}
