@@ -132,7 +132,7 @@ public class click extends JFrame {
         // Set the background color of the main panel to Charcoal Gray
         mainPanel.setBackground(new Color(54, 69, 79));
 
-        // "Who's Watching?" label
+
         JLabel titleLabel = new JLabel("Class of INF 231", SwingConstants.CENTER);
         titleLabel.setFont(new Font("SansSerif", Font.BOLD, 28));
         titleLabel.setForeground(Color.WHITE);
